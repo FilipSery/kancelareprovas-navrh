@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanceláře pro vás – návrh B</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../img/kh_mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0B3B2E; --deep:#072A21; --panel:#0E4436;
+  --gold:#C8A45D; --gold-l:#E4CB8E; --gold-d:#7A5C22;
+  --cream:#F6F2E9; --paper:#FBF8F2; --line:#DDD5C4;
+  --ink:#1C2A25; --muted:#4E5B54; --on-dark:#C9D0C8;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:'Montserrat',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-d)}
+.eyebrow.on-dark{color:var(--gold)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:18px 30px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;transition:background .25s,color .25s,border-color .25s}
+.btn-green{background:var(--green);color:var(--cream)}
+.btn-green:hover{background:var(--deep)}
+.btn-line{border:1px solid var(--green);color:var(--green)}
+.btn-line:hover{background:var(--green);color:var(--cream)}
+.btn-gold{background:var(--gold);color:var(--deep)}
+.btn-gold:hover{background:var(--gold-l)}
+
+/* HEADER – centered logo, split navigation */
+.top{background:var(--cream);border-bottom:1px solid var(--line)}
+.topbar{display:flex;justify-content:space-between;gap:16px;padding:12px 40px;font-size:12px;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--line);max-width:1320px;margin:0 auto}
+.topbar a:hover{color:var(--green)}
+.masthead{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px;padding:22px 40px;max-width:1320px;margin:0 auto}
+.masthead nav{display:flex;gap:30px;font-size:13px;font-weight:500;letter-spacing:.04em}
+.masthead nav.right{justify-content:flex-end;align-items:center}
+.masthead nav a:hover{color:var(--gold-d)}
+.brand{display:flex;flex-direction:column;align-items:center;gap:8px}
+.brand img{height:54px;width:auto}
+.brand span{font-size:13px;font-weight:600;letter-spacing:.24em;color:var(--green)}
+.nav-cta{border:1px solid var(--green);padding:11px 16px;font-size:11px!important;font-weight:600;letter-spacing:.16em}
+.nav-cta:hover{background:var(--green);color:var(--cream)!important}
+
+/* HERO – split */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);min-height:760px}
+.hero-text{display:flex;flex-direction:column;justify-content:center;gap:30px;padding:90px 64px 90px max(40px,calc((100vw - 1240px)/2 + 40px))}
+.hero h1{font-size:clamp(46px,5.4vw,84px);line-height:1.02;color:var(--green);letter-spacing:-.01em}
+.hero h1 em{color:var(--gold-d)}
+.hero p{margin:0;font-size:17px;line-height:1.75;color:var(--muted);max-width:480px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px}
+.hero-img{position:relative;background:var(--green)}
+.hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center}
+.hero-badge{position:absolute;left:-56px;bottom:72px;background:var(--green);color:var(--cream);padding:30px 34px;display:flex;gap:22px;align-items:center;box-shadow:0 24px 50px rgba(7,42,33,.3)}
+.hero-badge b{font-family:var(--serif);font-weight:500;font-size:64px;line-height:.9;color:var(--gold)}
+.hero-badge span{font-size:12px;letter-spacing:.16em;line-height:1.7;text-transform:uppercase;color:var(--on-dark)}
+
+/* QUOTE */
+.quote{position:relative;padding:150px 0;text-align:center;overflow:hidden;background:var(--paper)}
+.quote .ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,90vw);opacity:.07;pointer-events:none}
+.quote blockquote{position:relative;margin:0 auto;max-width:900px;font-family:var(--serif);font-style:italic;font-size:clamp(30px,3.4vw,46px);line-height:1.3;color:var(--green)}
+.quote cite{display:block;margin-top:34px;font-style:normal;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.3em;color:var(--gold-d)}
+.rule{width:64px;height:1px;background:var(--gold);margin:0 auto 34px}
+
+/* INDEX LIST */
+.index{padding:130px 0;background:var(--cream)}
+.index-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px}
+.index-head h2{font-size:clamp(38px,4.2vw,58px);line-height:1.05;color:var(--green);max-width:640px}
+.row{display:grid;grid-template-columns:90px minmax(0,1fr) minmax(0,1fr) 60px;align-items:center;gap:24px;padding:38px 0;border-top:1px solid var(--line);transition:padding .3s,background .3s}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row .n{font-family:var(--serif);font-size:24px;color:var(--gold-d)}
+.row h3{font-size:clamp(30px,3.2vw,44px);color:var(--green);line-height:1.1}
+.row p{margin:0;font-size:14px;line-height:1.7;color:var(--muted)}
+.row .arrow{width:54px;height:54px;border:1px solid var(--green);display:flex;align-items:center;justify-content:center;color:var(--green);transition:background .3s,color .3s}
+.row:hover{padding-left:18px;padding-right:18px;background:var(--paper)}
+.row:hover .arrow{background:var(--green);color:var(--gold)}
+
+/* MAP – full width */
+.mapsec{position:relative;background:var(--panel);min-height:720px;overflow:hidden}
+.mapsec svg.map{position:absolute;inset:0;width:100%;height:100%}
+.map-card{position:relative;z-index:2;margin:80px 0 80px max(40px,calc((100vw - 1240px)/2 + 40px));width:min(420px,calc(100% - 80px));background:var(--deep);border:1px solid rgba(200,164,93,.35);padding:44px 40px;display:flex;flex-direction:column;gap:22px}
+.map-card h2{font-size:42px;line-height:1.1;color:var(--cream)}
+.map-card p{margin:0;font-size:14px;line-height:1.8;color:var(--on-dark)}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filters button{background:transparent;border:1px solid rgba(200,164,93,.45);color:var(--cream);font:600 11px var(--sans);letter-spacing:.12em;padding:10px 14px;cursor:pointer}
+.filters button.on{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+.map-list a{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-top:1px solid rgba(200,164,93,.25);color:var(--cream)}
+.map-list a span:first-child{display:flex;flex-direction:column;gap:3px}
+.map-list b{font-family:var(--serif);font-weight:500;font-size:21px}
+.map-list small{font-size:11px;letter-spacing:.12em;color:#9FB5AB}
+.pin{position:absolute;z-index:1;width:42px;height:42px;background:var(--deep);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.pin img{width:26px}
+.cluster{position:absolute;z-index:1;width:58px;height:58px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:28px;color:var(--deep);box-shadow:0 10px 24px rgba(0,0,0,.4)}
+.cluster::after{content:"KH";position:absolute;top:-9px;right:-9px;background:var(--deep);border:1px solid var(--gold);color:var(--gold);font:600 10px var(--sans);letter-spacing:.08em;padding:3px 5px}
+.pop{position:absolute;z-index:1;width:270px;background:var(--cream);box-shadow:0 24px 50px rgba(0,0,0,.4)}
+.pop .ph{position:relative;height:150px;overflow:hidden}
+.pop .ph img{width:100%;height:100%;object-fit:cover}
+.pop .ph .wm{position:absolute;right:10px;bottom:8px;width:42px;opacity:.55}
+.pop .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px}
+.pop .bd b{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--green)}
+.pop .bd span{font-size:12.5px;color:var(--muted)}
+.map-note{position:absolute;right:18px;bottom:14px;z-index:2;font-size:11px;letter-spacing:.1em;color:#8FB0A4}
+
+/* ABOUT – dark with arch photo */
+.about{background:var(--green);color:var(--cream);padding:140px 0}
+.about .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:90px;align-items:center}
+.arch{position:relative}
+.arch img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 28%;border-radius:999px 999px 0 0}
+.arch::before{content:"";position:absolute;inset:-16px -16px 16px 16px;border:1px solid var(--gold);border-radius:999px 999px 0 0;pointer-events:none}
+.about h2{font-size:clamp(40px,4.4vw,60px);line-height:1.05;margin:18px 0 14px}
+.about .sub{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--gold);margin:0 0 30px}
+.about p{font-size:15px;line-height:1.9;color:var(--on-dark);margin:0 0 18px}
+.creds{display:flex;flex-wrap:wrap;gap:0;margin-top:34px;border-top:1px solid rgba(200,164,93,.3)}
+.creds div{flex:1 1 150px;padding:22px 20px 0 0}
+.creds b{display:block;font-family:var(--serif);font-weight:500;font-size:44px;color:var(--gold);line-height:1}
+.creds span{display:block;margin-top:8px;font-size:12px;letter-spacing:.08em;line-height:1.6;color:var(--on-dark)}
+
+/* PROCESS – timeline */
+.process{padding:130px 0;background:var(--paper)}
+.process h2{font-size:clamp(36px,4vw,54px);line-height:1.1;color:var(--green);text-align:center;max-width:760px;margin:18px auto 80px}
+.steps{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px}
+.steps::before{content:"";position:absolute;left:8%;right:8%;top:36px;height:1px;background:var(--gold)}
+.step{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px}
+.step .dot{width:72px;height:72px;border:1px solid var(--gold);background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:28px;color:var(--gold-d);transform:rotate(45deg)}
+.step .dot span{transform:rotate(-45deg)}
+.step h3{font-size:30px;color:var(--green);margin-top:14px}
+.step p{margin:0;font-size:15px;line-height:1.8;color:var(--muted);max-width:330px}
+
+/* REFERENCES – marquee */
+.refs{padding:90px 0;background:var(--cream);border-top:1px solid var(--line);overflow:hidden}
+.refs .eyebrow{text-align:center;margin-bottom:38px}
+.marquee{display:flex;gap:2px;width:max-content;animation:slide 32s linear infinite}
+.marquee div{width:220px;height:100px;background:var(--paper);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;letter-spacing:.14em;color:#6B756F}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee{animation:none}}
+
+/* INQUIRY – centered card */
+.inq{position:relative;padding:150px 0;background:var(--deep);overflow:hidden}
+.inq>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18}
+.inq-card{position:relative;max-width:820px;margin:0 auto;background:var(--cream);padding:70px clamp(24px,6vw,80px);border:1px solid var(--gold);outline:1px solid var(--gold);outline-offset:10px}
+.inq-card h2{font-size:clamp(36px,4vw,52px);line-height:1.1;color:var(--green);text-align:center;margin:16px 0 12px}
+.inq-card .lead{text-align:center;margin:0 0 44px;font-size:15px;line-height:1.7;color:var(--muted)}
+.inq-card .eyebrow{display:block;text-align:center}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px}
+.f{display:flex;flex-direction:column;gap:8px;font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--gold-d)}
+.f input,.f select,.f textarea{border:0;border-bottom:1px solid #BFB39A;background:transparent;padding:10px 0;font:15px var(--sans);color:var(--ink);border-radius:0}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-bottom-color:var(--green)}
+.full{grid-column:1/-1}
+.chk{display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.6;color:var(--muted);margin-top:24px}
+.chk input{margin-top:4px;accent-color:var(--green)}
+.inq-card .btn{margin:34px auto 0;display:flex;width:max-content;border:0;cursor:pointer}
+
+/* FOOTER */
+footer{background:var(--deep);color:var(--on-dark);padding:90px 0 34px;text-align:center}
+footer .logo{width:220px;margin:0 auto 44px}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:34px;font-size:13px;letter-spacing:.06em;margin-bottom:44px}
+footer nav a:hover,footer .contact a:hover{color:var(--gold)}
+footer .contact{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 40px;font-size:14px;padding:30px 0;border-top:1px solid rgba(200,164,93,.2);border-bottom:1px solid rgba(200,164,93,.2)}
+footer .contact b{font-family:var(--serif);font-weight:500;font-size:20px;color:var(--cream)}
+footer small{display:block;margin-top:28px;font-size:12px;color:#8FA59B}
+
+/* RESPONSIVE */
+@media (max-width:1000px){
+  .masthead{grid-template-columns:1fr;justify-items:center;gap:18px}
+  .masthead nav,.masthead nav.right{justify-content:center;flex-wrap:wrap;gap:18px}
+  .masthead .brand{order:-1}
+  .hero{grid-template-columns:1fr}
+  .hero-text{padding:70px 24px}
+  .hero-img{min-height:440px}
+  .hero-badge{left:24px;bottom:-40px}
+  .about .wrap{grid-template-columns:1fr;gap:70px}
+  .steps{grid-template-columns:1fr}
+  .steps::before{display:none}
+  .row{grid-template-columns:60px minmax(0,1fr) 54px}
+  .row p{display:none}
+  .pop{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 20px}
+  .topbar{flex-direction:column;align-items:center;padding:10px 20px}
+  .grid2{grid-template-columns:1fr}
+  .map-card{margin:40px 20px;width:auto}
+  .quote{padding:100px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="topbar">
+    <span>Nezávislé poradenství při pronájmu kanceláří · Praha</span>
+    <span><a href="tel:+420605296719">+420 605 296 719</a> · <a href="mailto:katerina@kancelareprovas.cz">katerina@kancelareprovas.cz</a></span>
+  </div>
+  <div class="masthead">
+    <nav aria-label="Nabídka">
+      <a href="#nabidka">Kancelářské prostory</a>
+      <a href="#nabidka">Skladové prostory</a>
+      <a href="#nabidka">Obchodní prostory</a>
+    </nav>
+    <a href="#" class="brand" aria-label="Kanceláře pro vás – úvod">
+      <img src="../img/kh_mark.png" alt="">
+      <span>KANCELÁŘE PRO VÁS</span>
+    </a>
+    <nav class="right" aria-label="Další">
+      <a href="#nabidka">Zařízené kanceláře</a>
+      <a href="#poptavka" class="nav-cta">Poptávka na míru</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Real Estate Advisory</span>
+    <h1>Najdu vám kanceláře, ve kterých <em>se vám bude skvěle podnikat.</em></h1>
+    <p>Čtvrt století na pražském trhu komerčních nemovitostí. Znám uvažování pronajímatelů – a tuto zkušenost využívám výhradně ve prospěch nájemců.</p>
+    <div class="hero-actions">
+      <a href="#nabidka" class="btn btn-green">Prohlédnout nabídku</a>
+      <a href="#poptavka" class="btn btn-line">Poptávka na míru</a>
+    </div>
+  </div>
+  <div class="hero-img">
+    <img src="../img/hero.jpg" alt="Zasedací místnost s výhledem na Prahu a logem Kanceláře pro vás">
+    <div class="hero-badge"><b>25</b><span>let na trhu<br>komerčních nemovitostí</span></div>
+  </div>
+</section>
+
+<section class="quote">
+  <img class="ghost" src="../img/kh_mark.png" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="rule"></div>
+    <blockquote>„Spolupráce se mnou znamená jistotu, že u jednacího stolu máte zkušeného profesionála, který hájí pouze vaše zájmy.“
+      <cite>ING. KATEŘINA HORNOVÁ</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="index" id="nabidka">
+  <div class="wrap">
+    <div class="index-head">
+      <div>
+        <span class="eyebrow">Nabídka</span>
+        <h2>Prostory pro každou fázi vašeho podnikání</h2>
+      </div>
+      <a href="#mapa" class="btn btn-line">Zobrazit na mapě</a>
+    </div>
+    <a class="row" href="#nabidka"><span class="n">01</span><h3>Kancelářské prostory</h3><p>Reprezentativní kanceláře k pronájmu napříč Prahou.</p><span class="arrow" aria-hidden="true">→</span></a>
+    <a class="row" href="#nabidka"><span class="n">02</span><h3>Skladové prostory</h3><p>Skladové a logistické plochy v Praze a okolí.</p><span class="arrow" aria-hidden="true">→</span></a>
+    <a class="row" href="#nabidka"><span class="n">03</span><h3>Obchodní prostory</h3><p>Obchodní a retailové prostory v atraktivních lokalitách.</p><span class="arrow" aria-hidden="true">→</span></a>
+    <a class="row" href="#nabidka"><span class="n">04</span><h3>Zařízené kanceláře</h3><p>Kanceláře připravené k okamžitému nastěhování.</p><span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="mapsec" id="mapa">
+  <svg class="map" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g stroke="#2C5E4F" stroke-width="1" fill="none">
+      <path d="M0 140 L1440 190 M0 300 L1440 260 M0 470 L1440 520 M0 610 L1440 590 M220 0 L300 720 M520 0 L470 720 M840 0 L920 720 M1120 0 L1070 720 M1320 0 L1360 720"/>
+      <path d="M0 80 L540 240 L1440 380 M110 720 L640 330 L1440 50" stroke-width="2.4" stroke="#356B5A"/>
+      <path d="M360 0 C 460 190 680 260 610 430 S 760 620 840 720" stroke-width=".8"/>
+    </g>
+    <path d="M760 0 C 820 110 670 190 720 300 C 770 410 900 450 830 560 C 790 630 850 690 880 720" stroke="#1D5A6A" stroke-width="26" fill="none" stroke-linecap="round"/>
+    <text x="790" y="360" fill="#4F8A97" font-size="12" letter-spacing="4" font-family="Montserrat, sans-serif" transform="rotate(66 790 360)">VLTAVA</text>
+  </svg>
+
+  <div class="pin" style="left:56%;top:22%"><img src="../img/kh_mark.png" alt="Budova"></div>
+  <div class="pin" style="left:88%;top:30%"><img src="../img/kh_mark.png" alt="Budova"></div>
+  <div class="pin" style="left:62%;top:76%"><img src="../img/kh_mark.png" alt="Budova"></div>
+  <div class="cluster" style="left:80%;top:64%">8</div>
+  <div class="pin" style="left:69%;top:44%;width:50px;height:50px;background:var(--gold);box-shadow:0 0 0 8px rgba(200,164,93,.22),0 10px 24px rgba(0,0,0,.4)"><img src="../img/kh_mark.png" alt="Vybraná budova" style="width:30px;filter:brightness(.25)"></div>
+  <div class="pop" style="left:calc(69% + 66px);top:calc(44% - 130px)">
+    <div class="ph"><img src="../img/recepce.jpg" alt="Fotografie budovy"><img class="wm" src="../img/kh_mark.png" alt="" aria-hidden="true"></div>
+    <div class="bd"><span class="eyebrow" style="font-size:10px">Praha 4</span><b>[Název budovy]</b><span>[Plocha] m² · [Cena] Kč/m²/měs.</span></div>
+  </div>
+
+  <div class="map-card">
+    <span class="eyebrow on-dark">Nabídka na mapě</span>
+    <h2>Najděte budovu tam, kde ji potřebujete</h2>
+    <p>Po kliknutí na budovu uvidíte fotografii, základní parametry a detail si stáhnete jako PDF.</p>
+    <div class="filters" role="group" aria-label="Filtr typu prostoru">
+      <button type="button" class="on">Vše</button>
+      <button type="button">Kanceláře</button>
+      <button type="button">Sklady</button>
+      <button type="button">Obchodní</button>
+    </div>
+    <div class="map-list">
+      <a href="#nabidka"><span><b>[Název budovy]</b><small>PRAHA 1 · [PLOCHA] m²</small></span><span aria-hidden="true" style="color:var(--gold)">→</span></a>
+      <a href="#nabidka"><span><b>[Název budovy]</b><small>PRAHA 4 · [PLOCHA] m²</small></span><span aria-hidden="true" style="color:var(--gold)">→</span></a>
+      <a href="#nabidka"><span><b>[Název budovy]</b><small>PRAHA 8 · [PLOCHA] m²</small></span><span aria-hidden="true" style="color:var(--gold)">→</span></a>
+    </div>
+  </div>
+  <span class="map-note">Ilustrační mapa – na webu Google Maps v tmavém stylu</span>
+</section>
+
+<section class="about" id="o-mne">
+  <div class="wrap">
+    <div class="arch"><img src="../img/katerina.jpg" alt="Ing. Kateřina Hornová"></div>
+    <div>
+      <span class="eyebrow on-dark">O mně</span>
+      <h2>Ing. Kateřina Hornová</h2>
+      <p class="sub">25 let zkušeností na kancelářském trhu v Praze</p>
+      <p>Jmenuji se Ing. Kateřina Hornová a už čtvrt století pomáhám firmám najít kanceláře, ve kterých se jim bude skvěle podnikat.</p>
+      <p>Svou profesní dráhu jsem odstartovala v předních nadnárodních realitních a investičních skupinách – nejprve v rakouské společnosti Immohold a následně ve společnosti Immofinanz. Za prvních 10 let své praxe přímo na straně významných majitelů budov jsem získala neocenitelný vhled do toho, jak fungují nájemní smlouvy, jaké jsou reálné možnosti pronajímatelů a kde je prostor pro vyjednávání.</p>
+      <div class="creds">
+        <div><b>25</b><span>let na trhu</span></div>
+        <div><b>10</b><span>let na straně vlastníků</span></div>
+        <div><b>15</b><span>let výhradně pro nájemce</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <span class="eyebrow" style="display:block;text-align:center">Jak pracuji</span>
+    <h2>Provedu vás celým procesem – od výběru lokality po podpis smlouvy</h2>
+    <div class="steps">
+      <div class="step"><div class="dot"><span>I</span></div><h3>Výběr ideálních prostor</h3><p>Zmapuji trh a vyberu pouze kanceláře, které skutečně odpovídají vašim potřebám, lokalitě a firemní kultuře.</p></div>
+      <div class="step"><div class="dot"><span>II</span></div><h3>Tvrdé vyjednávání</h3><p>Zajistím optimální výši nájemného, nájemní prázdniny (rent-free), příspěvky na vestavbu (fit-out) i bezpečné smluvní parametry.</p></div>
+      <div class="step"><div class="dot"><span>III</span></div><h3>Úspora času a peněz</h3><p>Přebírám veškerou komunikaci s pronajímateli, abyste se mohli naplno věnovat svému byznysu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="refs" aria-label="Reference">
+  <div class="eyebrow">Reference</div>
+  <div class="marquee">
+    <div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div><div>[LOGO KLIENTA]</div>
+    <div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div><div aria-hidden="true">[LOGO KLIENTA]</div>
+  </div>
+</section>
+
+<section class="inq" id="poptavka">
+  <img src="../img/recepce.jpg" alt="" aria-hidden="true">
+  <div class="wrap">
+    <form class="inq-card" onsubmit="return false">
+      <span class="eyebrow">Poptávka na míru</span>
+      <h2>Řekněte mi, co hledáte</h2>
+      <p class="lead">Nenašli jste v nabídce to pravé? Najdu prostory přesně pro vás.</p>
+      <div class="grid2">
+        <label class="f">JMÉNO A PŘÍJMENÍ<input type="text"></label>
+        <label class="f">FIRMA<input type="text"></label>
+        <label class="f">E-MAIL<input type="email"></label>
+        <label class="f">TELEFON<input type="tel"></label>
+        <label class="f">TYP PROSTORU<select><option>Kancelářské prostory</option><option>Skladové prostory</option><option>Obchodní prostory</option><option>Zařízené kanceláře</option></select></label>
+        <label class="f">POŽADOVANÁ PLOCHA (m²)<input type="text"></label>
+        <label class="f full">LOKALITA A DALŠÍ POŽADAVKY<textarea rows="3"></textarea></label>
+      </div>
+      <label class="chk"><input type="checkbox">Souhlasím se zpracováním osobních údajů.</label>
+      <button type="submit" class="btn btn-green">Odeslat poptávku</button>
+    </form>
+  </div>
+</section>
+
+<footer id="kontakt">
+  <div class="wrap">
+    <img class="logo" src="../img/logo_full.png" alt="Kanceláře pro vás – Ing. Kateřina Hornová – Real Estate Advisory">
+    <nav aria-label="Patička">
+      <a href="#nabidka">Kancelářské prostory</a>
+      <a href="#nabidka">Skladové prostory</a>
+      <a href="#nabidka">Obchodní prostory</a>
+      <a href="#nabidka">Zařízené kanceláře</a>
+      <a href="#poptavka">Poptávka na míru</a>
+    </nav>
+    <div class="contact">
+      <b>Ing. Kateřina Hornová</b>
+      <a href="tel:+420605296719">+420 605 296 719</a>
+      <a href="mailto:katerina@kancelareprovas.cz">katerina@kancelareprovas.cz</a>
+      <span>[Adresa] · IČ: [IČ]</span>
+    </div>
+    <small>© 2026 Kanceláře pro vás · Ochrana osobních údajů · Cookies</small>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.filters button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.filters button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
