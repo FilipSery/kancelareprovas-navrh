@@ -13,9 +13,10 @@
 :root{--ease-out:cubic-bezier(.23,1,.32,1);--gold:#C8A45D;--green:#0B3B2E;--deep:#072A21;--cream:#F6F2E9}
 body{margin:0;background:#072A21;font-family:'Montserrat',system-ui,sans-serif;color:#1C2A25;-webkit-font-smoothing:antialiased}
 a{color:#E4CB8E;text-decoration:none}
-.nav a{color:#EDE6D6;transition:color .2s ease}
+.nav a{color:#EDE6D6;transition:color .2s ease;white-space:nowrap}
+.brand-name,.brand-sub{white-space:nowrap}
 .lnk{border-bottom:1px solid rgba(200,164,93,.45);padding-bottom:3px;transition:border-color .2s ease}
-input,select,textarea{font-family:inherit}
+input,select,textarea,button{font-family:inherit}
 ::selection{background:#C8A45D;color:#072A21}
 input,textarea{caret-color:#C8A45D}
 :focus-visible{outline:2px solid #C8A45D;outline-offset:3px}
@@ -38,18 +39,42 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;bor
   .card:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.1)}
   .card:hover .go{transform:translateX(4px)}
   .row-link:hover .arr{transform:translateX(4px)}
+  .tab:hover{color:#F6F2E9}
+  .pill:hover{background:rgba(246,242,233,.08)}
+  .lang button:hover{color:#F6F2E9}
 }
 /* vstup hera – jednou po načtení */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .enter>*{animation:rise .8s var(--ease-out) both}
-.enter>*:nth-child(2){animation-delay:.08s}.enter>*:nth-child(3){animation-delay:.16s}
-@media (prefers-reduced-motion:reduce){.enter>*{animation:none}.card,.btn{transition:none}}
+.enter>*:nth-child(2){animation-delay:.08s}.enter>*:nth-child(3){animation-delay:.16s}.enter>*:nth-child(4){animation-delay:.24s}
+@media (prefers-reduced-motion:reduce){.enter>*{animation:none}.card,.btn{transition:none}html{scroll-behavior:auto!important}}
 /* mobilní menu */
 .menu-btn{display:none;background:transparent;border:1px solid rgba(200,164,93,.6);color:#F6F2E9;width:48px;height:48px;align-items:center;justify-content:center;cursor:pointer}
 .menu-btn svg{transition:transform .2s var(--ease-out)}
+/* přepínač jazyka */
+.hdr-r{display:flex;align-items:center;gap:14px}
+.lang{display:flex;align-items:center;border:1px solid rgba(200,164,93,.45)}
+.lang button{background:transparent;border:0;color:#B9C2B9;font-size:12px;font-weight:600;letter-spacing:.12em;padding:9px 9px;cursor:pointer;min-height:38px;transition:color .2s ease,background-color .2s ease}
+.lang button[aria-pressed="true"]{background:#C8A45D;color:#072A21}
+/* nabídka: typy, filtr, mapa/seznam */
+.tabs{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid rgba(200,164,93,.3)}
+.tab{background:transparent;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;color:#B9C2B9;font-size:13px;font-weight:600;letter-spacing:.08em;padding:16px 22px;cursor:pointer;transition:color .2s ease,border-color .2s ease}
+.tab[aria-selected="true"]{color:#F6F2E9;border-bottom-color:#C8A45D}
+.pills{display:flex;border:1px solid rgba(200,164,93,.55)}
+.pill{background:transparent;border:0;color:#F6F2E9;font-size:12px;font-weight:600;letter-spacing:.12em;padding:13px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background-color .2s ease,color .2s ease}
+.pill+.pill{border-left:1px solid rgba(200,164,93,.55)}
+.pill[aria-pressed="true"]{background:#C8A45D;color:#072A21}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:rgba(200,164,93,.3);border:1px solid rgba(200,164,93,.3)}
+.filters[hidden]{display:none}
+.filters label{background:#0E4436;display:flex;flex-direction:column;gap:6px;padding:16px 20px;font-size:11px;font-weight:600;letter-spacing:.12em;color:#C8A45D}
+.filters select{background:transparent;border:0;color:#F6F2E9;font-size:15px;padding:2px 0;appearance:none;cursor:pointer}
+.filters option{color:#1C2A25}
+.offer.list-only .map-box{display:none}
+.offer.list-only .offer-list{flex-basis:100%}
+.offer.list-only .offer-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));column-gap:48px}
 </style>
 <style>html{scroll-behavior:smooth}
-@media(max-width:1180px){
+@media(max-width:1420px){
   .menu-btn{display:inline-flex}
   header nav.nav{display:none!important;position:absolute;left:0;right:0;top:100%;background:#072A21;flex-direction:column;align-items:stretch!important;gap:0!important;padding:8px 24px 28px;border-bottom:1px solid rgba(200,164,93,.22)}
   header.open nav.nav{display:flex!important}
@@ -64,16 +89,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;bor
   .qs label{border-right:0!important;border-bottom:1px solid #DDD5C4}
   .qs button{flex:1 1 100%!important;min-height:60px!important}
   .stats{padding-top:72px!important}
+  .tab{padding:14px 14px;font-size:12px}
 }
-@media(max-width:1180px){header>div{flex-wrap:nowrap!important}}
-@media(max-width:700px){section{padding-left:20px!important;padding-right:20px!important}#top .hero-in{padding:72px 0 48px!important}header>div{padding:14px 20px!important}header>div>a{gap:12px!important}header>div>a img{height:38px!important}.brand-sub{display:none}.brand-name{font-size:13px!important;letter-spacing:.12em!important}}</style>
+@media(max-width:1420px){header>div{flex-wrap:nowrap!important}}
+@media(max-width:700px){section{padding-left:20px!important;padding-right:20px!important}#top .hero-in{padding:72px 0 48px!important}header>div{padding:14px 20px!important}header>div>a{gap:12px!important}header>div>a img{height:38px!important}.brand-sub{display:none}.brand-name{font-size:13px!important;letter-spacing:.12em!important}.hdr-r{gap:8px}.tabs{overflow-x:auto;flex-wrap:nowrap}.tab{white-space:nowrap}}
+@media(max-width:420px){.brand-name{display:none}}</style>
 </head>
 <body>
 <div style="width: 100%; background: #072A21; overflow: hidden">
 
 <!-- HEADER -->
 <header style="position: relative; z-index: 3; background: #072A21; border-bottom: 1px solid rgba(200,164,93,0.22)">
-<div style="max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px">
+<div style="max-width: 1320px; margin: 0 auto; padding: 18px 40px; display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 20px">
 <a href="#top" style="display: flex; align-items: center; gap: 16px">
 <img src="../img/kh_mark.png" alt="KH" style="height: 44px; width: auto; display: block">
 <span style="display: flex; flex-direction: column; gap: 3px">
@@ -81,76 +108,90 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;bor
 <span class="brand-sub" style="font-size: 11px; font-weight: 500; letter-spacing: 0.22em; color: #B9C2B9">REAL ESTATE ADVISORY</span>
 </span>
 </a>
+<nav class="nav" id="hlavni-nav" aria-label="Hlavní navigace" data-i18n-attr="aria-label:navLabel" style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px; font-size: 13px; font-weight: 500; letter-spacing: 0.03em">
+<a href="#mapa" data-typ="kancelare" data-i18n="t_kancelare">Kancelářské prostory</a>
+<a href="#mapa" data-typ="sklady" data-i18n="t_sklady">Skladové prostory</a>
+<a href="#mapa" data-typ="obchodni" data-i18n="t_obchodni">Obchodní prostory</a>
+<a href="#mapa" data-typ="zarizene" data-i18n="t_zarizene">Zařízené kanceláře</a>
+<a href="#kontakt" data-i18n="kontakt">Kontakt</a>
+<a href="#poptavka" class="btn btn-line nav-cta" data-i18n="poptavkaCta" style="border: 1px solid #C8A45D; color: #C8A45D; padding: 13px 18px; letter-spacing: 0.12em; font-size: 12px; font-weight: 600">POPTÁVKA NA MÍRU</a>
+</nav>
+<div class="hdr-r">
+<div class="lang" role="group" aria-label="Jazyk / Language">
+<button type="button" data-lang="cs" aria-pressed="true" lang="cs">CZ</button>
+<button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+</div>
 <button type="button" class="menu-btn" aria-expanded="false" aria-controls="hlavni-nav" aria-label="Otevřít menu">
 <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"></path></svg>
 </button>
-<nav class="nav" id="hlavni-nav" aria-label="Hlavní navigace" style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 13px; font-weight: 500; letter-spacing: 0.04em">
-<a href="#kancelare">Kancelářské prostory</a>
-<a href="#sklady">Skladové prostory</a>
-<a href="#obchodni">Obchodní prostory</a>
-<a href="#zarizene">Zařízené kanceláře</a>
-<a href="#kontakt">Kontakt</a>
-<a href="#poptavka" class="btn btn-line nav-cta" style="border: 1px solid #C8A45D; color: #C8A45D; padding: 13px 18px; letter-spacing: 0.12em; font-size: 12px; font-weight: 600">POPTÁVKA NA MÍRU</a>
-</nav>
+</div>
 </div>
 </header>
 
 <!-- HERO -->
 <section id="top" style="position: relative; min-height: 820px; display: flex; align-items: center; overflow: hidden">
-<img src="../img/hero.jpg" alt="Zasedací místnost s výhledem na Prahu a logem Kanceláře pro vás na stěně" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center">
+<img src="../img/hero.jpg" alt="Zasedací místnost s výhledem na Prahu a logem Kanceláře pro vás na stěně" data-i18n-attr="alt:altHero" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center">
 <div aria-hidden="true" class="hero-ov" style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7,42,33,0.96) 0%, rgba(7,42,33,0.88) 34%, rgba(7,42,33,0.35) 62%, rgba(7,42,33,0.05) 100%)"></div>
 <div class="hero-in" style="position: relative; z-index: 2; width: 100%; max-width: 1320px; margin: 0 auto; padding: 96px 40px 150px; box-sizing: border-box">
 <div class="enter" style="max-width: 640px; display: flex; flex-direction: column; gap: 28px">
-<h1 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(44px, 6vw, 78px); line-height: 1.04; color: #F6F2E9; letter-spacing: -0.01em; text-wrap: balance">Kanceláře v&#160;Praze, ve&#160;kterých se vám bude <span style="color: #C8A45D">skvěle podnikat.</span></h1>
-<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #D7DDD6; max-width: 540px">Nezávislé realitní poradenství při pronájmu kancelářských prostor. 25 let na trhu – a vždy výhradně na straně nájemce.</p>
+<h1 data-i18n="h1" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(44px, 6vw, 78px); line-height: 1.04; color: #F6F2E9; letter-spacing: -0.01em; text-wrap: balance">Kanceláře v&#160;Praze, ve&#160;kterých se vám bude <span style="color: #C8A45D">skvěle podnikat.</span></h1>
+<p data-i18n="heroP" style="margin: 0; font-size: 17px; line-height: 1.7; color: #D7DDD6; max-width: 540px">Nezávislé realitní poradenství při pronájmu kancelářských prostor. 25 let na trhu – a vždy výhradně na straně nájemce.</p>
+<p style="margin: 0; display: flex; align-items: center; gap: 14px; font-size: 15px; line-height: 1.5; color: #F6F2E9">
+<span aria-hidden="true" style="flex: none; width: 34px; height: 34px; border: 1px solid #C8A45D; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8A45D" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"></path></svg></span>
+<span data-i18n="heroFee"><strong style="font-weight: 600; color: #E4CB8E">Pro vás zcela zdarma</strong> – jako nájemce neplatíte žádnou provizi.</span>
+</p>
 <div style="display: flex; flex-wrap: wrap; gap: 16px; padding-top: 6px">
-<a href="#nabidka" class="btn btn-gold" style="background: #C8A45D; color: #072A21; padding: 18px 30px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em">PROHLÉDNOUT NABÍDKU</a>
-<a href="#poptavka" class="btn btn-ghost" style="border: 1px solid rgba(246,242,233,0.55); color: #F6F2E9; padding: 17px 30px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em">POPTÁVKA NA MÍRU</a>
+<a href="#mapa" class="btn btn-gold" data-i18n="heroBtn1" style="background: #C8A45D; color: #072A21; padding: 18px 30px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em">PROHLÉDNOUT NABÍDKU</a>
+<a href="#poptavka" class="btn btn-ghost" data-i18n="poptavkaCta" style="border: 1px solid rgba(246,242,233,0.55); color: #F6F2E9; padding: 17px 30px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em">POPTÁVKA NA MÍRU</a>
 </div>
 </div>
 </div>
 
 <!-- quick search -->
-<form class="qs" aria-label="Rychlé hledání" style="position: absolute; z-index: 3; left: 50%; bottom: 0; transform: translateX(-50%); width: min(1240px, calc(100% - 32px)); background: #F6F2E9; display: flex; flex-wrap: wrap; align-items: stretch; box-shadow: 0 24px 60px rgba(0,0,0,0.28)">
+<form class="qs" id="qs" aria-label="Rychlé hledání" data-i18n-attr="aria-label:qsLabel" style="position: absolute; z-index: 3; left: 50%; bottom: 0; transform: translateX(-50%); width: min(1240px, calc(100% - 32px)); background: #F6F2E9; display: flex; flex-wrap: wrap; align-items: stretch; box-shadow: 0 24px 60px rgba(0,0,0,0.28)">
 <label style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 6px; padding: 22px 28px; border-right: 1px solid #DDD5C4">
-<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">TYP PROSTORU</span>
-<select style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
-<option>Kancelářské prostory</option><option>Skladové prostory</option><option>Obchodní prostory</option><option>Zařízené kanceláře</option>
+<span data-i18n="lblTyp" style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">TYP PROSTORU</span>
+<select name="typ" style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
+<option value="kancelare" data-i18n="t_kancelare">Kancelářské prostory</option><option value="sklady" data-i18n="t_sklady">Skladové prostory</option><option value="obchodni" data-i18n="t_obchodni">Obchodní prostory</option><option value="zarizene" data-i18n="t_zarizene">Zařízené kanceláře</option>
 </select>
 </label>
 <label style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; padding: 22px 28px; border-right: 1px solid #DDD5C4">
-<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">LOKALITA</span>
-<select style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
-<option>Celá Praha</option><option>Praha 1</option><option>Praha 2</option><option>Praha 4</option><option>Praha 5</option><option>Praha 8</option>
+<span data-i18n="lblLok" style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">LOKALITA</span>
+<select name="lokalita" style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
+<option value="0" data-i18n="lokVse">Celá Praha</option><option value="1" data-i18n="p1">Praha 1</option><option value="2" data-i18n="p2">Praha 2</option><option value="4" data-i18n="p4">Praha 4</option><option value="5" data-i18n="p5">Praha 5</option><option value="8" data-i18n="p8">Praha 8</option>
 </select>
 </label>
 <label style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; padding: 22px 28px; border-right: 1px solid #DDD5C4">
-<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">PLOCHA</span>
-<select style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
-<option>Libovolná</option><option>do 200 m²</option><option>200–500 m²</option><option>500–1 000 m²</option><option>nad 1 000 m²</option>
+<span data-i18n="lblPlocha" style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #7A5C22">PLOCHA</span>
+<select name="plocha" style="border: 0; background: transparent; font-size: 16px; color: #1C2A25; padding: 0; appearance: none">
+<option value="0" data-i18n="plVse">Libovolná</option><option value="1" data-i18n="pl1">do 200 m²</option><option value="2">200–500 m²</option><option value="3" data-i18n="pl3">500–1 000 m²</option><option value="4" data-i18n="pl4">nad 1 000 m²</option>
 </select>
 </label>
-<button type="button" class="btn btn-green" style="flex: 0 1 220px; min-height: 84px; border: 0; background: #0B3B2E; color: #F6F2E9; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px">
+<button type="submit" class="btn btn-green" style="flex: 0 1 220px; min-height: 84px; border: 0; background: #0B3B2E; color: #F6F2E9; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px">
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
-HLEDAT
+<span data-i18n="hledat">HLEDAT</span>
 </button>
 </form>
 </section>
 
 <!-- STATS -->
 <section class="stats" style="background: #F6F2E9; padding: 110px 40px 80px">
-<div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0">
-<div style="padding: 8px 36px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
-<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">25 <span style="font-size: 26px; color: #7A5C22">let</span></div>
-<div style="font-size: 14px; line-height: 1.6; color: #4E5B54">na trhu komerčních nemovitostí v&#160;Praze</div>
+<div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px 0">
+<div style="padding: 8px 32px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">25 <span data-i18n="let" style="font-size: 26px; color: #7A5C22">let</span></div>
+<div data-i18n="st1" style="font-size: 14px; line-height: 1.6; color: #4E5B54">na trhu komerčních nemovitostí v&#160;Praze</div>
 </div>
-<div style="padding: 8px 36px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
-<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">10 <span style="font-size: 26px; color: #7A5C22">let</span></div>
-<div style="font-size: 14px; line-height: 1.6; color: #4E5B54">na straně vlastníků budov – Immohold a&#160;Immofinanz</div>
+<div style="padding: 8px 32px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">10 <span data-i18n="let" style="font-size: 26px; color: #7A5C22">let</span></div>
+<div data-i18n="st2" style="font-size: 14px; line-height: 1.6; color: #4E5B54">na straně vlastníků budov – Immohold a&#160;Immofinanz</div>
 </div>
-<div style="padding: 8px 36px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
-<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">15 <span style="font-size: 26px; color: #7A5C22">let</span></div>
-<div style="font-size: 14px; line-height: 1.6; color: #4E5B54">jako nezávislá poradkyně výhradně na straně nájemců</div>
+<div style="padding: 8px 32px; border-left: 1px solid #CDBF9E; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">15 <span data-i18n="let" style="font-size: 26px; color: #7A5C22">let</span></div>
+<div data-i18n="st3" style="font-size: 14px; line-height: 1.6; color: #4E5B54">jako nezávislá poradkyně výhradně na straně nájemců</div>
+</div>
+<div style="padding: 8px 32px; border-left: 2px solid #C8A45D; display: flex; flex-direction: column; gap: 10px">
+<div data-i18n="st4n" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 64px; line-height: 1; color: #0B3B2E">0 <span style="font-size: 26px; color: #7A5C22">Kč</span></div>
+<div data-i18n="st4" style="font-size: 14px; line-height: 1.6; color: #4E5B54"><strong style="font-weight: 600; color: #0B3B2E">provize pro vás jako nájemce</strong> – veškerý můj servis je pro klienty zdarma</div>
 </div>
 </div>
 </section>
@@ -160,62 +201,114 @@ HLEDAT
 <div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
 <div style="display: flex; flex-direction: column; gap: 14px">
-<h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #0B3B2E">Prostory pro každou fázi vašeho podnikání</h2>
+<h2 data-i18n="catH" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #0B3B2E">Prostory pro každou fázi vašeho podnikání</h2>
 </div>
-<a href="#nabidka" class="lnk" style="color: #0B3B2E; font-size: 13px; font-weight: 600; letter-spacing: 0.1em">CELÁ NABÍDKA →</a>
+<a href="#mapa" class="lnk" data-i18n="celaNabidka" style="color: #0B3B2E; font-size: 13px; font-weight: 600; letter-spacing: 0.1em">CELÁ NABÍDKA NA MAPĚ →</a>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2px; background: #DDD5C4">
-<a id="kancelare" class="card" href="#kancelare" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
+<a id="kancelare" class="card" href="#mapa" data-typ="kancelare" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
 <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#0B3B2E" stroke-width="1.3"><rect x="8" y="5" width="24" height="31"></rect><path d="M13 11h4M23 11h4M13 17h4M23 17h4M13 23h4M23 23h4M17 36v-6h6v6"></path></svg>
-<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Kancelářské prostory</span>
-<span style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Reprezentativní kanceláře k&#160;pronájmu napříč Prahou.</span>
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E">ZOBRAZIT NABÍDKU <span class="go" aria-hidden="true">→</span></span>
+<span data-i18n="t_kancelare" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Kancelářské prostory</span>
+<span data-i18n="c1" style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Reprezentativní kanceláře k&#160;pronájmu napříč Prahou.</span>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E"><span data-i18n="naMape">ZOBRAZIT NA MAPĚ</span> <span class="go" aria-hidden="true">→</span></span>
 </a>
-<a id="sklady" class="card" href="#sklady" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
+<a id="sklady" class="card" href="#mapa" data-typ="sklady" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
 <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#0B3B2E" stroke-width="1.3"><path d="M4 16L20 6l16 10v20H4z"></path><path d="M11 36V22h18v14M11 27h18M11 32h18"></path></svg>
-<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Skladové prostory</span>
-<span style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Skladové a logistické plochy v&#160;Praze a okolí.</span>
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E">ZOBRAZIT NABÍDKU <span class="go" aria-hidden="true">→</span></span>
+<span data-i18n="t_sklady" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Skladové prostory</span>
+<span data-i18n="c2" style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Skladové a logistické plochy v&#160;Praze a okolí.</span>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E"><span data-i18n="naMape">ZOBRAZIT NA MAPĚ</span> <span class="go" aria-hidden="true">→</span></span>
 </a>
-<a id="obchodni" class="card" href="#obchodni" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
+<a id="obchodni" class="card" href="#mapa" data-typ="obchodni" style="background: #FBF8F2; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #1C2A25">
 <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#0B3B2E" stroke-width="1.3"><path d="M5 14l3-8h24l3 8M5 14h30M5 14c0 3 2 5 5 5s5-2 5-5c0 3 2 5 5 5s5-2 5-5c0 3 2 5 5 5s5-2 5-5"></path><path d="M8 19v17h24V19M16 36v-9h8v9"></path></svg>
-<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Obchodní prostory</span>
-<span style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Obchodní a retailové prostory v&#160;atraktivních lokalitách.</span>
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E">ZOBRAZIT NABÍDKU <span class="go" aria-hidden="true">→</span></span>
+<span data-i18n="t_obchodni" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #0B3B2E">Obchodní prostory</span>
+<span data-i18n="c3" style="font-size: 14px; line-height: 1.7; color: #4E5B54; flex-grow: 1">Obchodní a retailové prostory v&#160;atraktivních lokalitách.</span>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #0B3B2E"><span data-i18n="naMape">ZOBRAZIT NA MAPĚ</span> <span class="go" aria-hidden="true">→</span></span>
 </a>
-<a id="zarizene" class="card" href="#zarizene" style="background: #0B3B2E; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #F6F2E9">
+<a id="zarizene" class="card" href="#mapa" data-typ="zarizene" style="background: #0B3B2E; padding: 40px 32px; display: flex; flex-direction: column; gap: 22px; min-height: 280px; color: #F6F2E9">
 <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#E4CB8E" stroke-width="1.3"><path d="M6 22h28M9 22v12M31 22v12M12 22v-6h16v6"></path><path d="M16 12h8l1-6H15z"></path></svg>
-<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #F6F2E9">Zařízené kanceláře</span>
-<span style="font-size: 14px; line-height: 1.7; color: #E4DFD1; flex-grow: 1">Kanceláře připravené k&#160;okamžitému nastěhování.</span>
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D">ZOBRAZIT NABÍDKU <span class="go" aria-hidden="true">→</span></span>
+<span data-i18n="t_zarizene" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; line-height: 1.15; color: #F6F2E9">Zařízené kanceláře</span>
+<span data-i18n="c4" style="font-size: 14px; line-height: 1.7; color: #E4DFD1; flex-grow: 1">Kanceláře připravené k&#160;okamžitému nastěhování.</span>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D"><span data-i18n="naMape">ZOBRAZIT NA MAPĚ</span> <span class="go" aria-hidden="true">→</span></span>
 </a>
 </div>
 </div>
 </section>
 
-<!-- MAP -->
-<section style="background: #0B3B2E; padding: 110px 40px">
-<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px; align-items: stretch">
-<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 26px">
-<h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #F6F2E9">Najděte budovu tam, kde ji potřebujete</h2>
-<p style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Každá budova má na mapě své místo. Po kliknutí uvidíte fotografii, základní parametry a&#160;detail si můžete stáhnout jako PDF.</p>
-<div style="display: flex; flex-direction: column; border-top: 1px solid rgba(200,164,93,0.3)">
-<a href="#nabidka" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
-<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9">PRAHA 1 · [PLOCHA] m²</span></span>
+<!-- MAPA A VYHLEDÁVÁNÍ -->
+<section id="mapa" style="background: #0B3B2E; padding: 110px 40px; scroll-margin-top: 0">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 760px">
+<h2 data-i18n="mapH" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #F6F2E9">Najděte budovu tam, kde ji potřebujete</h2>
+<p data-i18n="mapP" style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Každá budova má na mapě své místo. Po kliknutí uvidíte fotografii, základní parametry a&#160;detail si můžete stáhnout jako PDF.</p>
+</div>
+
+<div class="tabs" role="tablist" aria-label="Typ prostoru" data-i18n-attr="aria-label:lblTypShort">
+<button type="button" class="tab" role="tab" data-typ="kancelare" aria-selected="true" data-i18n="t_kancelare">Kancelářské prostory</button>
+<button type="button" class="tab" role="tab" data-typ="sklady" aria-selected="false" data-i18n="t_sklady">Skladové prostory</button>
+<button type="button" class="tab" role="tab" data-typ="obchodni" aria-selected="false" data-i18n="t_obchodni">Obchodní prostory</button>
+<button type="button" class="tab" role="tab" data-typ="zarizene" aria-selected="false" data-i18n="t_zarizene">Zařízené kanceláře</button>
+</div>
+
+<!-- bez provize -->
+<div style="display: flex; align-items: center; gap: 16px; background: #C8A45D; color: #072A21; padding: 16px 22px">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16.5 9"></path></svg>
+<span data-i18n="feeBand" style="font-size: 14px; line-height: 1.55"><strong style="font-weight: 600">U těchto nemovitostí nehradíte provizi.</strong> Veškerý můj servis je pro vás jako nájemce zdarma.</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<span style="font-size: 13px; letter-spacing: 0.06em; color: #B9C2B9"><span id="res-typ" style="color: #F6F2E9; font-weight: 600">Kancelářské prostory</span> · <span id="res-lok">Celá Praha</span></span>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div class="pills"><button type="button" class="pill" id="btn-filtr" aria-expanded="false" aria-controls="filtry" aria-pressed="false">
+<span data-i18n="filtrovat">FILTROVAT</span>
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h12M19 7h2M3 17h4M11 17h10"></path><circle cx="17" cy="7" r="2"></circle><circle cx="9" cy="17" r="2"></circle></svg>
+</button></div>
+<div class="pills" role="group" aria-label="Zobrazení" data-i18n-attr="aria-label:zobrazeni">
+<button type="button" class="pill" data-view="mapa" aria-pressed="true">
+<span data-i18n="mapa">MAPA</span>
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+</button>
+<button type="button" class="pill" data-view="seznam" aria-pressed="false">
+<span data-i18n="seznam">SEZNAM</span>
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1"></path></svg>
+</button>
+</div>
+</div>
+</div>
+
+<div class="filters" id="filtry" hidden>
+<label><span data-i18n="lblLok">LOKALITA</span>
+<select name="lokalita"><option value="0" data-i18n="lokVse">Celá Praha</option><option value="1" data-i18n="p1">Praha 1</option><option value="2" data-i18n="p2">Praha 2</option><option value="4" data-i18n="p4">Praha 4</option><option value="5" data-i18n="p5">Praha 5</option><option value="8" data-i18n="p8">Praha 8</option></select></label>
+<label><span data-i18n="lblPlocha">PLOCHA</span>
+<select name="plocha"><option value="0" data-i18n="plVse">Libovolná</option><option value="1" data-i18n="pl1">do 200 m²</option><option value="2">200–500 m²</option><option value="3" data-i18n="pl3">500–1 000 m²</option><option value="4" data-i18n="pl4">nad 1 000 m²</option></select></label>
+<label><span data-i18n="lblCena">CENA ZA m²/MĚSÍC</span>
+<select name="cena"><option value="0" data-i18n="plVse">Libovolná</option><option value="1" data-i18n="cena1">do 350 Kč</option><option value="2" data-i18n="cena2">350–500 Kč</option><option value="3" data-i18n="cena3">nad 500 Kč</option></select></label>
+<label><span data-i18n="lblDostupnost">DOSTUPNOST</span>
+<select name="dostupnost"><option value="0" data-i18n="kdykoli">Kdykoli</option><option value="1" data-i18n="ihned">Ihned</option><option value="2" data-i18n="do6">Do 6 měsíců</option></select></label>
+</div>
+
+<div class="offer" style="display: flex; flex-wrap: wrap; gap: 48px; align-items: stretch">
+<div class="offer-list" style="flex: 1 1 300px; display: flex; flex-direction: column">
+<div class="offer-rows" style="border-top: 1px solid rgba(200,164,93,0.3)">
+<a href="#mapa" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
+<span style="display: flex; flex-direction: column; gap: 4px"><span data-i18n="budova" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9"><span data-i18n="P1">PRAHA 1</span> · [PLOCHA] m²</span></span>
 <span class="arr" aria-hidden="true" style="color: #C8A45D; font-size: 20px">→</span>
 </a>
-<a href="#nabidka" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
-<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9">PRAHA 4 · [PLOCHA] m²</span></span>
+<a href="#mapa" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
+<span style="display: flex; flex-direction: column; gap: 4px"><span data-i18n="budova" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9"><span data-i18n="P4">PRAHA 4</span> · [PLOCHA] m²</span></span>
 <span class="arr" aria-hidden="true" style="color: #C8A45D; font-size: 20px">→</span>
 </a>
-<a href="#nabidka" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
-<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9">PRAHA 8 · [PLOCHA] m²</span></span>
+<a href="#mapa" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
+<span style="display: flex; flex-direction: column; gap: 4px"><span data-i18n="budova" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9"><span data-i18n="P8">PRAHA 8</span> · [PLOCHA] m²</span></span>
+<span class="arr" aria-hidden="true" style="color: #C8A45D; font-size: 20px">→</span>
+</a>
+<a href="#mapa" class="row-link" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(200,164,93,0.3); color: #F6F2E9">
+<span style="display: flex; flex-direction: column; gap: 4px"><span data-i18n="budova" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">[Název budovy]</span><span style="font-size: 12px; letter-spacing: 0.08em; color: #B9C2B9"><span data-i18n="P5">PRAHA 5</span> · [PLOCHA] m²</span></span>
 <span class="arr" aria-hidden="true" style="color: #C8A45D; font-size: 20px">→</span>
 </a>
 </div>
 </div>
 
-<div style="flex: 999 1 560px; min-width: 0; position: relative; min-height: 600px; background: #0E4436; color: #F6F2E9; border: 1px solid rgba(200,164,93,0.35); overflow: hidden">
+<div class="map-box" style="flex: 999 1 560px; min-width: 0; position: relative; min-height: 600px; background: #0E4436; color: #F6F2E9; border: 1px solid rgba(200,164,93,0.35); overflow: hidden">
 <svg aria-hidden="true" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%">
 <g stroke="#2C5E4F" stroke-width="1" fill="none">
 <path d="M0 120 L800 160 M0 260 L800 230 M0 410 L800 450 M0 520 L800 500 M120 0 L170 600 M290 0 L260 600 M470 0 L520 600 M640 0 L610 600"></path>
@@ -228,13 +321,13 @@ HLEDAT
 
 <!-- single markers -->
 <div style="position: absolute; left: 22%; top: 30%; width: 44px; height: 44px; background: #072A21; border: 1px solid #C8A45D; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.35)">
-<img src="../img/kh_mark.png" alt="Budova" style="width: 28px; height: auto">
+<img src="../img/kh_mark.png" alt="" style="width: 28px; height: auto">
 </div>
 <div style="position: absolute; left: 68%; top: 22%; width: 44px; height: 44px; background: #072A21; border: 1px solid #C8A45D; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.35)">
-<img src="../img/kh_mark.png" alt="Budova" style="width: 28px; height: auto">
+<img src="../img/kh_mark.png" alt="" style="width: 28px; height: auto">
 </div>
 <div style="position: absolute; left: 30%; top: 72%; width: 44px; height: 44px; background: #072A21; border: 1px solid #C8A45D; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.35)">
-<img src="../img/kh_mark.png" alt="Budova" style="width: 28px; height: auto">
+<img src="../img/kh_mark.png" alt="" style="width: 28px; height: auto">
 </div>
 
 <!-- cluster -->
@@ -245,24 +338,25 @@ HLEDAT
 
 <!-- active marker + popup -->
 <div style="position: absolute; left: 47%; top: 46%; width: 52px; height: 52px; background: #C8A45D; display: flex; align-items: center; justify-content: center; outline: 1px solid rgba(200,164,93,0.6); outline-offset: 6px; box-shadow: 0 10px 24px rgba(0,0,0,0.4)">
-<img src="../img/kh_mark.png" alt="Vybraná budova" style="width: 32px; height: auto; filter: brightness(0.25)">
+<img src="../img/kh_mark.png" alt="" style="width: 32px; height: auto; filter: brightness(0.25)">
 </div>
 <div style="position: absolute; left: calc(47% + 70px); top: calc(46% - 150px); width: 290px; background: #F6F2E9; box-shadow: 0 24px 50px rgba(0,0,0,0.4)">
 <div style="position: relative; height: 170px; overflow: hidden">
-<img src="../img/recepce.jpg" alt="Fotografie budovy" style="width: 100%; height: 100%; object-fit: cover">
-<img src="../img/kh_mark.png" alt="" aria-hidden="true" style="position: absolute; right: 12px; bottom: 10px; width: 46px; opacity: 0.55">
+<img src="../img/recepce.jpg" alt="" style="width: 100%; height: 100%; object-fit: cover">
+<span data-i18n="bezProvize" style="position: absolute; left: 0; top: 12px; background: #C8A45D; color: #072A21; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; padding: 6px 10px">BEZ PROVIZE</span>
 </div>
 <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px">
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #7A5C22">PRAHA 1</span>
-<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; color: #0B3B2E">[Název budovy]</span>
-<span style="font-size: 13px; color: #4E5B54">[Plocha] m² · [Cena] Kč/m²/měs.</span>
+<span data-i18n="P1" style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #7A5C22">PRAHA 1</span>
+<span data-i18n="budova" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; color: #0B3B2E">[Název budovy]</span>
+<span data-i18n="popCena" style="font-size: 13px; color: #4E5B54">[Plocha] m² · [Cena] Kč/m²/měs.</span>
 <div style="display: flex; gap: 10px; padding-top: 8px">
-<a href="#nabidka" class="btn btn-green" style="flex: 1; text-align: center; background: #0B3B2E; color: #F6F2E9; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; padding: 14px 8px">DETAIL</a>
-<a href="#nabidka" style="flex: 1; text-align: center; border: 1px solid #0B3B2E; color: #0B3B2E; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; padding: 13px 8px">PDF</a>
+<a href="#mapa" class="btn btn-green" style="flex: 1; text-align: center; background: #0B3B2E; color: #F6F2E9; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; padding: 14px 8px">DETAIL</a>
+<a href="#mapa" style="flex: 1; text-align: center; border: 1px solid #0B3B2E; color: #0B3B2E; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; padding: 13px 8px">PDF</a>
 </div>
 </div>
 </div>
 <!-- Ilustrační mapa – na webu bude Google Maps v tmavém stylu -->
+</div>
 </div>
 </div>
 </section>
@@ -276,11 +370,12 @@ HLEDAT
 </div>
 <div style="flex: 1.2 1 420px; display: flex; flex-direction: column; gap: 26px">
 <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(38px, 4.4vw, 56px); line-height: 1.08; color: #0B3B2E">Ing. Kateřina Hornová</h2>
-<p style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 26px; line-height: 1.35; color: #7A5C22">Váš nezávislý partner ve&#160;světě kanceláří</p>
-<p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3E4B45">Na trhu komerčních nemovitostí se pohybuji 25 let. Prvních deset let své kariéry jsem sbírala zkušenosti na straně velkých nadnárodních vlastníků a investorů, konkrétně ve skupinách Immohold a&#160;Immofinanz. Díky tomu detailně znám uvažování pronajímatelů, jejich smluvní procesy i&#160;vyjednávací strategie.</p>
-<p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3E4B45">Posledních 15 let působím jako nezávislá poradkyně a tyto zkušenosti využívám výhradně ve prospěch svých klientů. Zastupuji firmy při hledání nových kancelářských prostor a vedu za ně kompletní jednání o nájemních podmínkách – od prvního výběru lokality až po podpis smlouvy.</p>
+<p data-i18n="aboutSub" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 26px; line-height: 1.35; color: #7A5C22">Váš nezávislý partner ve&#160;světě kanceláří</p>
+<p data-i18n="about1" style="margin: 0; font-size: 15px; line-height: 1.85; color: #3E4B45">Na trhu komerčních nemovitostí se pohybuji 25 let. Prvních deset let své kariéry jsem sbírala zkušenosti na straně velkých nadnárodních vlastníků a investorů, konkrétně ve skupinách Immohold a&#160;Immofinanz. Díky tomu detailně znám uvažování pronajímatelů, jejich smluvní procesy i&#160;vyjednávací strategie.</p>
+<p data-i18n="about2" style="margin: 0; font-size: 15px; line-height: 1.85; color: #3E4B45">Posledních 15 let působím jako nezávislá poradkyně a tyto zkušenosti využívám výhradně ve prospěch svých klientů. Zastupuji firmy při hledání nových kancelářských prostor a vedu za ně kompletní jednání o nájemních podmínkách – od prvního výběru lokality až po podpis smlouvy.</p>
+<p data-i18n="about3" style="margin: 0; font-size: 15px; line-height: 1.85; color: #0B3B2E; padding-left: 18px; border-left: 2px solid #C8A45D"><strong style="font-weight: 600">Veškerý můj servis je pro vás zdarma.</strong> Jako nájemce mi neplatíte žádnou provizi.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: center; padding-top: 8px">
-<a href="#o-mne" class="btn btn-green" style="background: #0B3B2E; color: #F6F2E9; padding: 17px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em">VÍCE O MNĚ</a>
+<a href="#o-mne" class="btn btn-green" data-i18n="viceOMne" style="background: #0B3B2E; color: #F6F2E9; padding: 17px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em">VÍCE O MNĚ</a>
 <a href="tel:+420605296719" class="lnk" style="color: #0B3B2E; font-size: 14px; font-weight: 600">+420 605 296 719</a>
 </div>
 </div>
@@ -291,23 +386,28 @@ HLEDAT
 <section style="background: #072A21; padding: 120px 40px">
 <div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 60px">
 <div style="display: flex; flex-direction: column; gap: 16px; max-width: 720px">
-<h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #F6F2E9">U jednacího stolu hájím pouze vaše zájmy</h2>
+<h2 data-i18n="srvH" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 52px); line-height: 1.1; color: #F6F2E9">U jednacího stolu hájím pouze vaše zájmy</h2>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 48px">
 <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 1px solid #C8A45D">
 <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; color: #C8A45D">I.</span>
-<h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Výběr ideálních prostor</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Zmapuji trh a vyberu pouze kanceláře, které skutečně odpovídají vašim potřebám, lokalitě a firemní kultuře.</p>
+<h3 data-i18n="s1h" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Výběr ideálních prostor</h3>
+<p data-i18n="s1p" style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Zmapuji trh a vyberu pouze kanceláře, které skutečně odpovídají vašim potřebám, lokalitě a firemní kultuře.</p>
 </div>
 <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 1px solid #C8A45D">
 <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; color: #C8A45D">II.</span>
-<h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Tvrdé vyjednávání podmínek</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Zajistím optimální výši nájemného, nájemní prázdniny (rent-free), příspěvky na vestavbu (fit-out) i bezpečné smluvní parametry.</p>
+<h3 data-i18n="s2h" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Tvrdé vyjednávání podmínek</h3>
+<p data-i18n="s2p" style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Zajistím optimální výši nájemného, nájemní prázdniny (rent-free), příspěvky na vestavbu (fit-out) i bezpečné smluvní parametry.</p>
 </div>
 <div style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 1px solid #C8A45D">
 <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; color: #C8A45D">III.</span>
-<h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Úspora času a peněz</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Přebírám veškerou komunikaci s pronajímateli, abyste se mohli naplno věnovat svému byznysu.</p>
+<h3 data-i18n="s3h" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Úspora času a peněz</h3>
+<p data-i18n="s3p" style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Přebírám veškerou komunikaci s pronajímateli, abyste se mohli naplno věnovat svému byznysu.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px; border-top: 2px solid #C8A45D">
+<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 20px; color: #C8A45D">IV.</span>
+<h3 data-i18n="s4h" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 30px; color: #F6F2E9">Pro vás zdarma</h3>
+<p data-i18n="s4p" style="margin: 0; font-size: 15px; line-height: 1.8; color: #E4DFD1">Celý můj servis je pro klienty bezplatný. Neplatíte žádnou provizi – ani za vyhledání, ani za vyjednání smlouvy.</p>
 </div>
 </div>
 </div>
@@ -316,13 +416,13 @@ HLEDAT
 <!-- REFERENCES -->
 <section style="background: #F6F2E9; padding: 100px 40px">
 <div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; align-items: center">
-<h2 style="margin: 0; text-align: center; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(32px, 3.6vw, 46px); line-height: 1.15; color: #0B3B2E">Firmy, které jsem provázela pronájmem</h2>
+<h2 data-i18n="refH" style="margin: 0; text-align: center; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(32px, 3.6vw, 46px); line-height: 1.15; color: #0B3B2E">Firmy, které jsem provázela pronájmem</h2>
 <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2px; background: #DDD5C4">
-<div style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
-<div style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
-<div style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
-<div style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
-<div style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
+<div data-i18n="logoK" style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
+<div data-i18n="logoK" style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
+<div data-i18n="logoK" style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
+<div data-i18n="logoK" style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
+<div data-i18n="logoK" style="background: #FBF8F2; height: 120px; display: flex; align-items: center; justify-content: center; font-size: 12px; letter-spacing: 0.14em; color: #6B756F">[LOGO KLIENTA]</div>
 </div>
 </div>
 </section>
@@ -330,23 +430,24 @@ HLEDAT
 <!-- INQUIRY -->
 <section id="poptavka" style="background: #0B3B2E; display: flex; flex-wrap: wrap">
 <div style="flex: 1 1 420px; position: relative; min-height: 420px">
-<img src="../img/recepce.jpg" alt="Recepce s logem Kanceláře pro vás" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<img src="../img/recepce.jpg" alt="Recepce s logem Kanceláře pro vás" data-i18n-attr="alt:altRecepce" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
 <div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(7,42,33,0.85) 0%, rgba(7,42,33,0) 55%)"></div>
-<p style="position: absolute; left: 48px; right: 48px; bottom: 44px; margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 30px; line-height: 1.3; color: #F6F2E9">„Mým cílem je zajistit vám nejen reprezentativní zázemí, ale především ty nejlepší možné podmínky.“</p>
+<p data-i18n="quote" style="position: absolute; left: 48px; right: 48px; bottom: 44px; margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 30px; line-height: 1.3; color: #F6F2E9">„Mým cílem je zajistit vám nejen reprezentativní zázemí, ale především ty nejlepší možné podmínky.“</p>
 </div>
-<form aria-label="Poptávka na míru" style="flex: 1 1 520px; padding: 90px clamp(24px, 5vw, 80px); display: flex; flex-direction: column; gap: 22px; box-sizing: border-box">
-<h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(34px, 3.8vw, 48px); line-height: 1.1; color: #F6F2E9">Řekněte mi, co hledáte</h2>
+<form aria-label="Poptávka na míru" data-i18n-attr="aria-label:formLabel" style="flex: 1 1 520px; padding: 90px clamp(24px, 5vw, 80px); display: flex; flex-direction: column; gap: 22px; box-sizing: border-box">
+<h2 data-i18n="formH" style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(34px, 3.8vw, 48px); line-height: 1.1; color: #F6F2E9">Řekněte mi, co hledáte</h2>
+<p data-i18n="formFee" style="margin: 0; font-size: 14px; line-height: 1.6; color: #E4CB8E">Služba je pro vás zdarma – žádná provize.</p>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 24px">
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">JMÉNO A PŘÍJMENÍ<input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">FIRMA<input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="fJmeno">JMÉNO A PŘÍJMENÍ</span><input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="fFirma">FIRMA</span><input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
 <label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">E-MAIL<input type="email" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">TELEFON<input type="tel" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">TYP PROSTORU<select style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"><option style="color: #1C2A25">Kancelářské prostory</option><option style="color: #1C2A25">Skladové prostory</option><option style="color: #1C2A25">Obchodní prostory</option><option style="color: #1C2A25">Zařízené kanceláře</option></select></label>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">POŽADOVANÁ PLOCHA (m²)<input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="fTel">TELEFON</span><input type="tel" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="lblTyp">TYP PROSTORU</span><select style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"><option style="color: #1C2A25" data-i18n="t_kancelare">Kancelářské prostory</option><option style="color: #1C2A25" data-i18n="t_sklady">Skladové prostory</option><option style="color: #1C2A25" data-i18n="t_obchodni">Obchodní prostory</option><option style="color: #1C2A25" data-i18n="t_zarizene">Zařízené kanceláře</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="fPlocha">POŽADOVANÁ PLOCHA (m²)</span><input type="text" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9"></label>
 </div>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6">LOKALITA A DALŠÍ POŽADAVKY<textarea rows="3" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9; resize: vertical"></textarea></label>
-<label style="display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.6; color: #E4DFD1"><input type="checkbox" style="margin-top: 4px; accent-color: #C8A45D">Souhlasím se zpracováním osobních údajů.</label>
-<div style="padding-top: 8px"><button type="button" class="btn btn-gold" style="background: #C8A45D; color: #072A21; border: 0; padding: 19px 34px; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; cursor: pointer">ODESLAT POPTÁVKU</button></div>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; color: #C2CEC6"><span data-i18n="fDalsi">LOKALITA A DALŠÍ POŽADAVKY</span><textarea rows="3" style="background: transparent; border: 0; border-bottom: 1px solid rgba(246,242,233,0.35); padding: 10px 0; font-size: 15px; color: #F6F2E9; resize: vertical"></textarea></label>
+<label style="display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.6; color: #E4DFD1"><input type="checkbox" style="margin-top: 4px; accent-color: #C8A45D"><span data-i18n="fSouhlas">Souhlasím se zpracováním osobních údajů.</span></label>
+<div style="padding-top: 8px"><button type="button" class="btn btn-gold" data-i18n="odeslat" style="background: #C8A45D; color: #072A21; border: 0; padding: 19px 34px; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; cursor: pointer">ODESLAT POPTÁVKU</button></div>
 </form>
 </section>
 
@@ -356,28 +457,28 @@ HLEDAT
 <div style="display: flex; flex-wrap: wrap; gap: 56px; justify-content: space-between">
 <img src="../img/logo_full.png" alt="Kanceláře pro vás – Ing. Kateřina Hornová – Real Estate Advisory" style="width: 230px; height: auto; display: block">
 <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14px">
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">NABÍDKA</span>
-<a href="#kancelare" style="color: #D7DDD6">Kancelářské prostory</a>
-<a href="#sklady" style="color: #D7DDD6">Skladové prostory</a>
-<a href="#obchodni" style="color: #D7DDD6">Obchodní prostory</a>
-<a href="#zarizene" style="color: #D7DDD6">Zařízené kanceláře</a>
+<span data-i18n="fNabidka" style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">NABÍDKA</span>
+<a href="#mapa" data-typ="kancelare" data-i18n="t_kancelare" style="color: #D7DDD6">Kancelářské prostory</a>
+<a href="#mapa" data-typ="sklady" data-i18n="t_sklady" style="color: #D7DDD6">Skladové prostory</a>
+<a href="#mapa" data-typ="obchodni" data-i18n="t_obchodni" style="color: #D7DDD6">Obchodní prostory</a>
+<a href="#mapa" data-typ="zarizene" data-i18n="t_zarizene" style="color: #D7DDD6">Zařízené kanceláře</a>
 </div>
 <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14px">
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">KONTAKT</span>
+<span data-i18n="fKontakt" style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">KONTAKT</span>
 <span style="color: #F6F2E9; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px">Ing. Kateřina Hornová</span>
 <a href="tel:+420605296719" style="color: #D7DDD6">+420 605 296 719</a>
 <a href="mailto:katerina@kancelareprovas.cz" style="color: #D7DDD6">katerina@kancelareprovas.cz</a>
-<span style="color: #8FA59B">[Adresa] · IČ: [IČ]</span>
+<span data-i18n="adresa" style="color: #8FA59B">[Adresa] · IČ: [IČ]</span>
 </div>
 <div style="display: flex; flex-direction: column; gap: 16px; max-width: 260px">
-<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">POPTÁVKA</span>
-<span style="font-size: 14px; line-height: 1.7; color: #E4DFD1">Nenašli jste v nabídce, co hledáte? Najdu prostory přesně pro vás.</span>
-<a href="#poptavka" class="btn btn-line" style="border: 1px solid #C8A45D; color: #C8A45D; padding: 13px 18px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; align-self: flex-start">POPTÁVKA NA MÍRU</a>
+<span data-i18n="fPoptavka" style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #C8A45D; padding-bottom: 6px">POPTÁVKA</span>
+<span data-i18n="fPoptavkaT" style="font-size: 14px; line-height: 1.7; color: #E4DFD1">Nenašli jste v nabídce, co hledáte? Najdu prostory přesně pro vás – a to zdarma, bez provize.</span>
+<a href="#poptavka" class="btn btn-line" data-i18n="poptavkaCta" style="border: 1px solid #C8A45D; color: #C8A45D; padding: 13px 18px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; align-self: flex-start">POPTÁVKA NA MÍRU</a>
 </div>
 </div>
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 26px; border-top: 1px solid rgba(200,164,93,0.18); font-size: 12px; color: #8FA59B">
 <span>© 2026 Kanceláře pro vás · Ing. Kateřina Hornová</span>
-<span>Ochrana osobních údajů · Cookies</span>
+<span data-i18n="gdpr">Ochrana osobních údajů · Cookies</span>
 </div>
 </div>
 </footer>
@@ -385,11 +486,109 @@ HLEDAT
 </div>
 <script>
 (function(){
-  var h=document.querySelector('header'),b=h.querySelector('.menu-btn');
-  function set(o){h.classList.toggle('open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Zavřít menu':'Otevřít menu');}
-  b.addEventListener('click',function(){set(!h.classList.contains('open'))});
-  h.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){set(false)})});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+  /* ---------- překlady (EN) ---------- */
+  var EN={
+    navLabel:'Main navigation', qsLabel:'Quick search', formLabel:'Tailored request', zobrazeni:'View', lblTypShort:'Space type',
+    altHero:'Meeting room with a view of Prague and the Kanceláře pro vás logo on the wall', altRecepce:'Reception with the Kanceláře pro vás logo',
+    t_kancelare:'Office space', t_sklady:'Warehouse space', t_obchodni:'Retail space', t_zarizene:'Serviced offices',
+    kontakt:'Contact', poptavkaCta:'TAILORED REQUEST',
+    h1:'Offices in Prague where your business will <span style="color: #C8A45D">truly thrive.</span>',
+    heroP:'Independent real estate advisory for leasing office space. 25 years on the market – always exclusively on the tenant’s side.',
+    heroFee:'<strong style="font-weight: 600; color: #E4CB8E">Completely free for you</strong> – as a tenant, you pay no commission.',
+    heroBtn1:'BROWSE LISTINGS', lblTyp:'SPACE TYPE', lblLok:'LOCATION', lblPlocha:'SIZE', hledat:'SEARCH',
+    lokVse:'All of Prague', p1:'Prague 1', p2:'Prague 2', p4:'Prague 4', p5:'Prague 5', p8:'Prague 8',
+    P1:'PRAGUE 1', P4:'PRAGUE 4', P5:'PRAGUE 5', P8:'PRAGUE 8',
+    plVse:'Any', pl1:'up to 200 m²', pl3:'500–1,000 m²', pl4:'over 1,000 m²',
+    let:'yrs', st1:'on the Prague commercial real estate market', st2:'on the landlord side – Immohold and Immofinanz', st3:'as an independent advisor exclusively representing tenants',
+    st4n:'0 <span style="font-size: 26px; color: #7A5C22">CZK</span>',
+    st4:'<strong style="font-weight: 600; color: #0B3B2E">commission for you as a tenant</strong> – all my services are free for clients',
+    catH:'Space for every stage of your business', celaNabidka:'ALL LISTINGS ON THE MAP →', naMape:'VIEW ON MAP',
+    c1:'Prestigious offices for lease across Prague.', c2:'Warehouse and logistics space in and around Prague.', c3:'Retail and commercial space in attractive locations.', c4:'Offices ready to move into straight away.',
+    mapH:'Find a building exactly where you need it',
+    mapP:'Every building has its place on the map. Click on it to see a photo and key details, and download the full specification as a PDF.',
+    feeBand:'<strong style="font-weight: 600">You pay no commission on these properties.</strong> My entire service is free for you as a tenant.',
+    filtrovat:'FILTER', mapa:'MAP', seznam:'LIST', lblCena:'PRICE PER m²/MONTH', lblDostupnost:'AVAILABILITY',
+    cena1:'up to CZK 350', cena2:'CZK 350–500', cena3:'over CZK 500', kdykoli:'Any time', ihned:'Immediately', do6:'Within 6 months',
+    budova:'[Building name]', bezProvize:'NO COMMISSION', popCena:'[Size] m² · CZK [price]/m²/month',
+    aboutSub:'Your independent partner in the world of offices',
+    about1:'I have been active on the commercial real estate market for 25 years. I spent the first ten years of my career on the side of large international owners and investors – the Immohold and Immofinanz groups. As a result, I know in detail how landlords think, their contractual processes and their negotiation strategies.',
+    about2:'For the past 15 years I have worked as an independent advisor, using this experience exclusively for the benefit of my clients. I represent companies in their search for new office space and lead the entire negotiation of lease terms on their behalf – from the first shortlist of locations to signing the contract.',
+    about3:'<strong style="font-weight: 600">My entire service is free for you.</strong> As a tenant, you pay me no commission.',
+    viceOMne:'MORE ABOUT ME',
+    srvH:'At the negotiating table, I represent only your interests',
+    s1h:'Finding the ideal space', s1p:'I map the market and select only offices that truly match your needs, location and company culture.',
+    s2h:'Tough negotiation of terms', s2p:'I secure the optimal rent, rent-free periods, fit-out contributions and safe contractual terms.',
+    s3h:'Saving time and money', s3p:'I take over all communication with landlords so you can focus fully on your business.',
+    s4h:'Free of charge for you', s4p:'My entire service is free for clients. You pay no commission – neither for the search nor for negotiating the lease.',
+    refH:'Companies I have guided through a lease', logoK:'[CLIENT LOGO]',
+    quote:'“My goal is to secure not only prestigious premises for you, but above all the best possible terms.”',
+    formH:'Tell me what you are looking for', formFee:'The service is free for you – no commission.',
+    fJmeno:'FULL NAME', fFirma:'COMPANY', fTel:'PHONE', fPlocha:'REQUIRED SIZE (m²)', fDalsi:'LOCATION AND OTHER REQUIREMENTS',
+    fSouhlas:'I agree to the processing of my personal data.', odeslat:'SEND REQUEST',
+    fNabidka:'LISTINGS', fKontakt:'CONTACT', fPoptavka:'REQUEST', adresa:'[Address] · Company ID: [ID]',
+    fPoptavkaT:'Didn’t find what you are looking for? I will find the right space for you – free of charge, with no commission.',
+    gdpr:'Privacy policy · Cookies'
+  };
+  var TITLE={cs:document.title,en:'Kanceláře pro vás – office space in Prague'};
+  var lang='cs';
+  var nodes=[].slice.call(document.querySelectorAll('[data-i18n]'));
+  nodes.forEach(function(n){n._cs=n.innerHTML});
+  var anodes=[].slice.call(document.querySelectorAll('[data-i18n-attr]'));
+  anodes.forEach(function(n){n._cs={};n.getAttribute('data-i18n-attr').split(';').forEach(function(p){var a=p.split(':')[0];n._cs[a]=n.getAttribute(a)})});
+  var langBtns=[].slice.call(document.querySelectorAll('.lang button'));
+  function t(k,cs){return lang==='en'&&EN[k]!=null?EN[k]:cs}
+  function setLang(l){
+    lang=l; document.documentElement.lang=l; document.title=TITLE[l];
+    nodes.forEach(function(n){n.innerHTML=t(n.getAttribute('data-i18n'),n._cs)});
+    anodes.forEach(function(n){n.getAttribute('data-i18n-attr').split(';').forEach(function(p){var s=p.split(':');n.setAttribute(s[0],t(s[1],n._cs[s[0]]))})});
+    langBtns.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-lang')===l)});
+    menuLabel(); summary();
+    try{localStorage.setItem('kpv-lang',l)}catch(e){}
+  }
+  langBtns.forEach(function(b){b.addEventListener('click',function(){setLang(b.getAttribute('data-lang'))})});
+
+  /* ---------- mobilní menu ---------- */
+  var h=document.querySelector('header'),mb=h.querySelector('.menu-btn');
+  function menuLabel(){var o=h.classList.contains('open');mb.setAttribute('aria-label',lang==='en'?(o?'Close menu':'Open menu'):(o?'Zavřít menu':'Otevřít menu'))}
+  function setMenu(o){h.classList.toggle('open',o);mb.setAttribute('aria-expanded',o);menuLabel()}
+  mb.addEventListener('click',function(){setMenu(!h.classList.contains('open'))});
+  h.querySelectorAll('nav a').forEach(function(a){a.addEventListener('click',function(){setMenu(false)})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});
+
+  /* ---------- nabídka: typ, filtr, mapa/seznam ---------- */
+  var typ='kancelare';
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  var flt=document.getElementById('filtry'), fBtn=document.getElementById('btn-filtr');
+  var fLok=flt.querySelector('[name=lokalita]'), fPl=flt.querySelector('[name=plocha]');
+  function summary(){
+    var tab=tabs.filter(function(x){return x.getAttribute('data-typ')===typ})[0];
+    document.getElementById('res-typ').textContent=tab.textContent;
+    document.getElementById('res-lok').textContent=fLok.options[fLok.selectedIndex].text+(fPl.value!=='0'?' · '+fPl.options[fPl.selectedIndex].text:'');
+  }
+  function setTyp(v){
+    typ=v; tabs.forEach(function(x){x.setAttribute('aria-selected',x.getAttribute('data-typ')===v)}); summary();
+  }
+  tabs.forEach(function(x){x.addEventListener('click',function(){setTyp(x.getAttribute('data-typ'))})});
+  // odkazy v menu, na kartách a v patičce rovnou nastaví typ a sjedou na mapu
+  document.querySelectorAll('a[data-typ]').forEach(function(a){a.addEventListener('click',function(){setTyp(a.getAttribute('data-typ'))})});
+  fBtn.addEventListener('click',function(){var o=flt.hidden;flt.hidden=!o;fBtn.setAttribute('aria-expanded',o);fBtn.setAttribute('aria-pressed',o)});
+  [fLok,fPl].forEach(function(s){s.addEventListener('change',summary)});
+  var offer=document.querySelector('.offer');
+  var vBtns=[].slice.call(document.querySelectorAll('[data-view]'));
+  vBtns.forEach(function(b){b.addEventListener('click',function(){
+    var v=b.getAttribute('data-view'); offer.classList.toggle('list-only',v==='seznam');
+    vBtns.forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+  })});
+  // rychlé hledání v hlavičce: přenese volby do filtru a sjede na mapu
+  document.getElementById('qs').addEventListener('submit',function(e){
+    e.preventDefault(); var f=e.target;
+    fLok.value=f.lokalita.value; fPl.value=f.plocha.value; setTyp(f.typ.value);
+    if(fLok.value!=='0'||fPl.value!=='0'){flt.hidden=false;fBtn.setAttribute('aria-expanded',true);fBtn.setAttribute('aria-pressed',true)}
+    document.getElementById('mapa').scrollIntoView();
+  });
+
+  var saved=null; try{saved=new URLSearchParams(location.search).get('lang')||localStorage.getItem('kpv-lang')}catch(e){}
+  if(saved==='en') setLang('en'); else summary();
 })();
 </script>
 </body>
